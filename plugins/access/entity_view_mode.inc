@@ -130,9 +130,9 @@ function ctools_entity_view_mode_ctools_access_summary($conf, $context, $plugin)
   }
 
   if (empty($names)) {
-    return t('@identifier is any view mode', array('@identifier' => $context[0]->identifier));
+    return t('@identifier is any view mode', array('@identifier' => $context[1]->identifier));
   }
 
-  return format_plural(count($names), '@identifier is view mode "@view_modes"', '@identifier view mode is one of "@view_modes"', array('@view_modes' => implode(', ', $names), '@identifier' => $context[0]->identifier));
+  return format_plural(count($names), '@identifier is "@view_modes"', '@identifier view mode is one of "@view_modes"', array('@view_modes' => implode(', ', $names), '@identifier' => $context[1]->identifier));
 }
 
