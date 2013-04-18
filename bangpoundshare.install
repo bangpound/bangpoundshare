@@ -15,6 +15,7 @@ function bangpoundshare_schema_1() {
     'export' => array(
       'identifier' => 'link',
       'primary key' => 'lid',
+      'object' => 'bangpoundShareLink',
       'api' => array(
         'owner' => 'bangpoundshare',
         'api' => 'links',
@@ -51,12 +52,12 @@ function bangpoundshare_schema_1() {
         'length' => '255',
         'description' => 'Administrative category for this content.',
       ),
-      'requiredcontexts' => array(
-        'type' => 'text',
-        'size' => 'big',
-        'serialize' => TRUE,
-        'object default' => array(),
-        'description' => 'An array of required contexts.',
+      'entity_type' => array(
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'The entity type this data is attached to.',
       ),
       'contexts' => array(
         'type' => 'text',

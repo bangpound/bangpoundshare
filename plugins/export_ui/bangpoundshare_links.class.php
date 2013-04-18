@@ -92,6 +92,19 @@ class bangpoundshare_links extends ctools_export_ui {
     // Get the basic edit form
     parent::edit_form($form, $form_state);
 
+    $entity_type_options = array();
+    foreach (entity_get_info() as $entity_type => $entity_info) {
+      $entity_type_options[$entity_type] = $entity_info['label'];
+    }
+
+    $form['entity_type'] = array(
+      '#type' => 'select',
+      '#title' => t('Entity type'),
+      '#options' => $entity_type_options,
+      '#default_value' => $form_state['item']->entity_type,
+      '#required' => TRUE,
+    );
+
     $form['category'] = array(
       '#type' => 'textfield',
       '#default_value' => $form_state['item']->category,
@@ -125,7 +138,6 @@ class bangpoundshare_links extends ctools_export_ui {
     $name = $this->edit_cache_get_key($form_state['item'], $form_state['form type']);
 
     ctools_context_add_context_form($module, $form, $form_state, $form['right']['contexts_table'], $form_state['item'], $name);
-    ctools_context_add_required_context_form($module, $form, $form_state, $form['left']['required_contexts_table'], $form_state['item'], $name);
     ctools_context_add_relationship_form($module, $form, $form_state, $form['right']['relationships_table'], $form_state['item'], $name);
   }
 

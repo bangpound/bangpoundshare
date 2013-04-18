@@ -35,15 +35,9 @@ function bangpoundshare_entity_view($entity, $type, $view_mode, $langcode) {
   $uri = entity_uri($type, $entity);
 
   $links = array();
-  foreach (ctools_export_crud_load_all('bangpoundshare_links') as $item) {
+  foreach (ctools_export_load_object('bangpoundshare_links', 'conditions', array('entity_type' => $type)) as $item) {
 
-    $required = array();
-    foreach ($item->requiredcontexts as $requiredcontext) {
-      $info = ctools_get_context($requiredcontext['name']);
-      $required[] = new ctools_context_required($requiredcontext['identifier'], $info['context name']);
-    }
-
-    if (empty($item) || !empty($item->disabled) || !ctools_context_match_requirements($context, $required)) {
+    if (empty($item) || !empty($item->disabled)) {
       continue;
     }
 

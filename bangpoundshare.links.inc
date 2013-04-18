@@ -11,28 +11,14 @@
 function bangpoundshare_default_bangpoundshare_links() {
   $links = array();
 
-  $link = new stdClass();
+  $link = new bangpoundShareLink();
   $link->disabled = FALSE; /* Edit this to true to make a default link disabled initially */
   $link->api_version = 1;
   $link->name = 'facebook';
   $link->admin_title = 'Facebook';
   $link->admin_description = '';
   $link->category = '';
-  $link->requiredcontexts = array(
-    0 => array(
-      'identifier' => 'Node',
-      'keyword' => 'node',
-      'name' => 'entity:node',
-      'entity_id' => '',
-      'id' => 1,
-    ),
-    1 => array(
-      'identifier' => 'String',
-      'keyword' => 'string',
-      'name' => 'string',
-      'id' => 1,
-    ),
-  );
+  $link->entity_type = 'node';
   $link->contexts = array();
   $link->relationships = array();
   $link->access = array(
@@ -86,28 +72,14 @@ function bangpoundshare_default_bangpoundshare_links() {
   $link->path = 'http://www.facebook.com/sharer.php?u=%node:url&t=%node:title';
   $links['facebook'] = $link;
 
-  $link = new stdClass();
+  $link = new bangpoundShareLink();
   $link->disabled = FALSE; /* Edit this to true to make a default link disabled initially */
   $link->api_version = 1;
   $link->name = 'google_plus';
   $link->admin_title = 'Google+';
   $link->admin_description = '';
   $link->category = '';
-  $link->requiredcontexts = array(
-    0 => array(
-      'identifier' => 'Node',
-      'keyword' => 'node',
-      'name' => 'entity:node',
-      'entity_id' => '',
-      'id' => 1,
-    ),
-    1 => array(
-      'identifier' => 'String',
-      'keyword' => 'string',
-      'name' => 'string',
-      'id' => 1,
-    ),
-  );
+  $link->entity_type = 'node';
   $link->contexts = array();
   $link->relationships = array();
   $link->access = array(
@@ -161,28 +133,14 @@ function bangpoundshare_default_bangpoundshare_links() {
   $link->path = 'https://plus.google.com/share?url=%node:url';
   $links['google_plus'] = $link;
 
-  $link = new stdClass();
+  $link = new bangpoundShareLink();
   $link->disabled = FALSE; /* Edit this to true to make a default link disabled initially */
   $link->api_version = 1;
   $link->name = 'twitter';
   $link->admin_title = 'Twitter';
   $link->admin_description = '';
   $link->category = '';
-  $link->requiredcontexts = array(
-    0 => array(
-      'identifier' => 'Node',
-      'keyword' => 'node',
-      'name' => 'entity:node',
-      'entity_id' => '',
-      'id' => 1,
-    ),
-    1 => array(
-      'identifier' => 'String',
-      'keyword' => 'string',
-      'name' => 'string',
-      'id' => 1,
-    ),
-  );
+  $link->entity_type = 'node';
   $link->contexts = array();
   $link->relationships = array();
   $link->access = array(
