@@ -1,0 +1,4 @@
+name = !&# Share
+description = Social sharing links
+core = 7.x
+dependencies[] = ctools

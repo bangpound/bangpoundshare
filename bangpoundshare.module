@@ -1,0 +1,80 @@
+<?php
+
+/**
+ * Implement hook_ctools_plugin_directory().
+ */
+function bangpoundshare_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools' && ($plugin == 'export_ui' || $plugin == 'access')) {
+    return 'plugins/' . $plugin;
+  }
+}
+
+/**
+ * Implements hook_ctools_plugin_api().
+ */
+function bangpoundshare_ctools_plugin_api($module, $api) {
+  if ($module == 'bangpoundshare' && $api == 'links') {
+    return array('version' => 1);
+  }
+}
+
+/**
+ * Implement hook_node_view().
+ */
+function bangpoundshare_entity_view($entity, $type, $view_mode, $langcode) {
+
+  ctools_include('export');
+  ctools_include('context');
+
+  // Load up any contexts we might be using.
+  $context = array();
+  $context[] = ctools_context_create('entity:'. $type, $entity);
+  $context[] = ctools_context_create('string', $view_mode);
+
+  // Add social media sharing links to node.
+  $uri = entity_uri($type, $entity);
+
+  $links = array();
+  foreach (ctools_export_crud_load_all('bangpoundshare_links') as $item) {
+
+    $required = array();
+    foreach ($item->requiredcontexts as $requiredcontext) {
+      $info = ctools_get_context($requiredcontext['name']);
+      $required[] = new ctools_context_required($requiredcontext['identifier'], $info['context name']);
+    }
+
+    if (empty($item) || !empty($item->disabled) || !ctools_context_match_requirements($context, $required)) {
+      continue;
+    }
+
+    $contexts = ctools_context_match_required_contexts($item->requiredcontexts, $context);
+    $item->context = ctools_context_load_contexts($item, FALSE, $contexts);
+
+    if (!ctools_access($item->access, $item->context)) {
+      continue;
+    }
+
+    $link = array();
+
+    $link['path'] = ctools_context_keyword_substitute($item->path, array(), $item->context);
+    $url = parse_url($link['path']);
+    if (isset($url['query'])) {
+      $link['path'] = strtr($link['path'], array('?' . $url['query'] => ''));
+      $link['query'] = drupal_get_query_array($url['query']);
+    }
+    if (isset($url['fragment'])) {
+      $link['path'] = strtr($link['path'], array('#' . $url['fragment'] => ''));
+      $link['fragment'] = $url['fragment'];
+    }
+    $link['href'] = rtrim($link['path'], '?');
+    $link['title'] = $item->text;
+
+    $links[$item->name] = $link;
+  }
+
+  $entity->content['links']['sharing'] = array(
+    '#theme' => 'links__'. $type .'__sharing',
+    '#links' => $links,
+    '#attributes' => array('class' => array('links', 'inline')),
+  );
+}
