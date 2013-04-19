@@ -3,3 +3,5 @@ description = Social sharing links
 core = 7.x
 dependencies[] = ctools
 files[] = bangpoundsharelink.class.php
+files[] = ServiceLinksAnalyticsService.inc
+files[] = service_links_analytics.queue.inc

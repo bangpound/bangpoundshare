@@ -7,6 +7,9 @@ function bangpoundshare_ctools_plugin_directory($module, $plugin) {
   if ($module == 'ctools' && ($plugin == 'export_ui' || $plugin == 'access')) {
     return 'plugins/' . $plugin;
   }
+  if ($module == 'bangpoundshare' && $plugin == 'services') {
+    return 'plugins/services';
+  }
 }
 
 /**
@@ -71,4 +74,181 @@ function bangpoundshare_entity_view($entity, $type, $view_mode, $langcode) {
     '#links' => $links,
     '#attributes' => array('class' => array('links', 'inline')),
   );
+}
+
+/**
+ * Returns analytics for a URL.
+ */
+function bangpoundshare_data($entity_type, $entity, $service_id) {
+
+  $uri = entity_uri($entity_type, $entity);
+  //$uri['options']['absolute'] = TRUE;
+  $url = 'http://electronicintifada.net'. url($uri['path'], $uri['options']);
+  $plugin = ctools_get_plugins('bangpoundshare', 'services', $service_id);
+  $handler = bangpoundshare_get_handler($plugin);
+  $handler->request($url);
+  $handler->parse();
+  return $handler->result();
+}
+
+/**
+ * Loads statistics for a URL.
+ */
+function bangpoundshare_load($entity_type, $entity_id) {
+  $results = db_select('service_links_analytics', 'a')
+    ->fields('a', array('service', 'metric', 'value'))
+    ->condition('entity_type', $entity_type)
+    ->condition('entity_id', $entity_id)
+    ->execute()
+    ->fetchAll();
+
+  $analytics = array();
+
+  foreach ($results as $result) {
+    $analytics[$result->service][$result->metric] = $result->value;
+  }
+
+  return $analytics;
+}
+
+/**
+ * Saves statistics for a URL.
+ */
+function bangpoundshare_save($row) {
+  $plugin = ctools_get_plugins('bangpoundshare', 'services', $row->service);
+  foreach ($plugin['metrics'] as $metric) {
+    db_merge('service_links_analytics')
+      ->key(array(
+        'entity_type' => $row->entity_type,
+        'entity_id' => $row->entity_id,
+        'service' => $row->service,
+        'metric' => $metric,
+      ))
+      ->fields(array(
+        'value' => is_array($row->value) ? $row->value[$metric] : $row->value,
+        'refresh' => time() + $plugin['max_age'],
+      ))
+      ->execute();
+  }
+}
+
+/**
+ * Implements hook_entity_load().
+ */
+function bangpoundshare_entity_load($entities, $type) {
+  $types = variable_get('service_links_analytics_entity_types', array('node'));
+  if (in_array($type, $types)) {
+
+    ctools_include('plugins');
+    $plugins = ctools_get_plugins('bangpoundshare', 'services');
+
+    foreach ($entities as $entity) {
+      list($id) = entity_extract_ids($type, $entity);
+      $result = bangpoundshare_load($type, $id);
+      if (count($result) < count($plugins)) {
+        $queue = DrupalQueue::get('service_links_analytics');
+        foreach (array_keys(array_diff_key($plugins, $result)) as $service) {
+
+          $data = array(
+            'entity_type' => $type,
+            'entity_id' => $id,
+            'service' => $plugins[$service]['name'],
+            'metric' => $plugins[$service]['metrics'][0],
+            'refresh' => time(),
+          );
+          $queue->createItem($data);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function bangpoundshare_views_api() {
+  return array(
+    'api' => 3,
+  );
+}
+
+/**
+ * Implement hook_cron().
+ */
+function bangpoundshare_cron() {
+
+  // Reset expired items in the default queue implementation table. If that's
+  // not used, this will simply be a no-op.
+  db_update('service_links_analytics')
+    ->fields(array(
+      'expire' => 0,
+    ))
+    ->condition('expire', 0, '<>')
+    ->condition('expire', REQUEST_TIME, '<')
+    ->execute();
+}
+
+/**
+ * Implements hook_cron_queue_info().
+ */
+function bangpoundshare_cron_queue_info() {
+  $queues['service_links_analytics'] = array(
+    'worker callback' => 'bangpoundshare_refresh',
+  );
+  return $queues;
+}
+
+function bangpoundshare_refresh($data) {
+  $entities = entity_load($data->entity_type, array($data->entity_id), array(), FALSE);
+  $entity = reset($entities);
+
+  $result = new stdClass;
+  $result->entity_type = $data->entity_type;
+  $result->entity_id = $data->entity_id;
+  $result->service = $data->service;
+
+  $value = bangpoundshare_data($data->entity_type, $entity, $data->service);
+  if ($value) {
+    $result->value = $value;
+  }
+  else {
+    $result->value = 0;
+  }
+  bangpoundshare_save($result);
+}
+
+/**
+ * Implements hook_ctools_plugin_type().
+ */
+function bangpoundshare_ctools_plugin_type() {
+  $plugins['services'] = array(
+    'defaults' => array(
+      'max_age' => 3600,
+      'handler' => array(
+        'class' => 'ServiceLinksAnalyticsService',
+      ),
+      'metrics' => array(
+        'count',
+      ),
+    ),
+  );
+  return $plugins;
+}
+
+function bangpoundshare_get_handler($plugin) {
+  $cache = &drupal_static(__FUNCTION__, array());
+  if (empty($cache[$plugin['name']])) {
+    $class = ctools_plugin_get_class($plugin, 'handler');
+
+    if ($class) {
+      $cache[$plugin['name']] = new $class();
+      $cache[$plugin['name']]->init($plugin);
+    }
+  }
+  return !empty($cache[$plugin['name']]) ? $cache[$plugin['name']] : FALSE;
+}
+
+function bangpoundshare_entity_delete($entity, $type) {
+  list($id) = entity_extract_ids($type, $entity);
+  db_delete('service_links_analytics')->condition('entity_type', $type)->condition('entity_id', $id)->execute();
 }
