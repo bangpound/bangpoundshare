@@ -6,7 +6,7 @@
 function bangpoundshare_schema() {
   $schema = bangpoundshare_schema_1();
 
-  $schema['service_links_analytics'] = array(
+  $schema['bangpoundshare_stats'] = array(
     'description' => 'TODO: please describe this table!',
     'fields' => array(
       'entity_type' => array(
@@ -153,6 +153,17 @@ function bangpoundshare_schema_1() {
         'length' => '255',
         'not null' => FALSE,
       ),
+      'options' => array(
+        'description' => 'TODO: please describe this field!',
+        'type' => 'text',
+        'size' => 'big',
+        'serialize' => TRUE,
+        'object default' => array(
+          'attributes' => array(
+            'class' => array(),
+          ),
+        ),
+      ),
     ),
     'primary key' => array('lid'),
   );
@@ -161,5 +172,5 @@ function bangpoundshare_schema_1() {
 }
 
 function bangpoundshare_enable() {
-  variable_set('queue_class_service_links_analytics', 'ServiceLinksAnalyticsQueue');
+  variable_set('queue_class_bangpoundshare_stats', 'ServiceLinksAnalyticsQueue');
 }

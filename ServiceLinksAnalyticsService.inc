@@ -23,7 +23,11 @@ class ServiceLinksAnalyticsService {
 
   function parse() {
     if ($this->response->code == 200) {
+
+      // JSON responses.
       $this->data = drupal_json_decode($this->response->data);
+
+      // JSONP responses.
       if (!$this->data) {
         $this->data = drupal_json_decode(preg_replace('/.+?({.+}).+/', '$1', $this->response->data));
       }

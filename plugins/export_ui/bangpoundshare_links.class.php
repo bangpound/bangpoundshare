@@ -178,6 +178,23 @@ class bangpoundshare_links extends ctools_export_ui {
       '#size' => 255,
     );
 
+    $form['options'] = array(
+      '#type' => 'fieldset',
+      '#tree' => TRUE,
+      '#title' => 'Options',
+    );
+
+    $form['options']['attributes'] = array(
+      '#tree' => TRUE,
+    );
+
+    $form['options']['attributes']['class'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Class'),
+      '#default_value' => implode(' ', $form_state['item']->options['attributes']['class']),
+      '#size' => 255,
+    );
+
     if (!empty($form_state['contexts'])) {
       // Set extended description if both CCK and Token modules are enabled, notifying of unlisted keywords
       if (module_exists('content') && module_exists('token')) {
@@ -209,5 +226,9 @@ class bangpoundshare_links extends ctools_export_ui {
       $header = array(t('Keyword'), t('Value'));
       $form['contexts']['context'] = array('#markup' => theme('table', array('header' => $header, 'rows' => $rows)));
     }
+  }
+
+  function edit_form_content_validate(&$form, &$form_state) {
+    form_set_value($form['options']['attributes']['class'], explode(' ', $form_state['values']['options']['attributes']['class']), $form_state);
   }
 }

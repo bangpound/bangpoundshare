@@ -8,8 +8,9 @@ $plugin = array(
   'access' => 'administer site configuration',
   'menu' => array(
     'menu item' => 'links',
+    'menu prefix' => 'admin/config/services/share',
     'menu title' => 'Links',
-    'menu description' => 'Administer Mymodule presets.',
+    'menu description' => 'Configure social sharing links.',
   ),
   'title singular' => t('link'),
   'title singular proper' => t('Link'),

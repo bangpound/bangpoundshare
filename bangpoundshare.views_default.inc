@@ -15,7 +15,7 @@ function bangpoundshare_views_default_views() {
   $view->name = 'metrics';
   $view->description = '';
   $view->tag = 'default';
-  $view->base_table = 'service_links_analytics';
+  $view->base_table = 'bangpoundshare_stats';
   $view->human_name = 'Metrics';
   $view->core = 7;
   $view->api_version = '3.0';
@@ -63,19 +63,19 @@ function bangpoundshare_views_default_views() {
   );
   /* Field: Service links analytics: Service */
   $handler->display->display_options['fields']['service']['id'] = 'service';
-  $handler->display->display_options['fields']['service']['table'] = 'service_links_analytics';
+  $handler->display->display_options['fields']['service']['table'] = 'bangpoundshare_stats';
   $handler->display->display_options['fields']['service']['field'] = 'service';
   /* Field: Service links analytics: Metric */
   $handler->display->display_options['fields']['metric']['id'] = 'metric';
-  $handler->display->display_options['fields']['metric']['table'] = 'service_links_analytics';
+  $handler->display->display_options['fields']['metric']['table'] = 'bangpoundshare_stats';
   $handler->display->display_options['fields']['metric']['field'] = 'metric';
   /* Field: Service links analytics: Value */
   $handler->display->display_options['fields']['value']['id'] = 'value';
-  $handler->display->display_options['fields']['value']['table'] = 'service_links_analytics';
+  $handler->display->display_options['fields']['value']['table'] = 'bangpoundshare_stats';
   $handler->display->display_options['fields']['value']['field'] = 'value';
   /* Contextual filter: Service links analytics: entity_id */
   $handler->display->display_options['arguments']['entity_id']['id'] = 'entity_id';
-  $handler->display->display_options['arguments']['entity_id']['table'] = 'service_links_analytics';
+  $handler->display->display_options['arguments']['entity_id']['table'] = 'bangpoundshare_stats';
   $handler->display->display_options['arguments']['entity_id']['field'] = 'entity_id';
   $handler->display->display_options['arguments']['entity_id']['default_action'] = 'not found';
   $handler->display->display_options['arguments']['entity_id']['default_argument_type'] = 'fixed';
@@ -84,7 +84,7 @@ function bangpoundshare_views_default_views() {
   $handler->display->display_options['arguments']['entity_id']['summary_options']['items_per_page'] = '25';
   /* Filter criterion: Service links analytics: Entity type */
   $handler->display->display_options['filters']['entity_type']['id'] = 'entity_type';
-  $handler->display->display_options['filters']['entity_type']['table'] = 'service_links_analytics';
+  $handler->display->display_options['filters']['entity_type']['table'] = 'bangpoundshare_stats';
   $handler->display->display_options['filters']['entity_type']['field'] = 'entity_type';
   $handler->display->display_options['filters']['entity_type']['value'] = 'node';
 

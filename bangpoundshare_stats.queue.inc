@@ -20,11 +20,11 @@ class ServiceLinksAnalyticsQueue implements DrupalReliableQueueInterface {
   }
 
   public function createItem($data) {
-    return drupal_write_record('service_links_analytics', $data);
+    return drupal_write_record('bangpoundshare_stats', $data);
   }
 
   public function numberOfItems() {
-    $query = db_select('service_links_analytics')
+    $query = db_select('bangpoundshare_stats')
       ->condition('refresh', time(), '<');
 
     $query->addExpression('COUNT(*)');
@@ -34,7 +34,7 @@ class ServiceLinksAnalyticsQueue implements DrupalReliableQueueInterface {
   public function claimItem($lease_time = 30) {
     // Claim an item by updating its expire fields.
     while (TRUE) {
-      $query = db_select('service_links_analytics', 'a')
+      $query = db_select('bangpoundshare_stats', 'a')
         ->fields('a', array('entity_type', 'entity_id', 'service'))
         ->condition('expire', 0)
         ->condition('refresh', time(), '<')
@@ -46,7 +46,7 @@ class ServiceLinksAnalyticsQueue implements DrupalReliableQueueInterface {
         $item->data = clone $item;
 
         // Try to update the item.
-        $update = db_update('service_links_analytics')
+        $update = db_update('bangpoundshare_stats')
           ->fields(array(
             'expire' => time() + $lease_time,
           ))
@@ -68,7 +68,7 @@ class ServiceLinksAnalyticsQueue implements DrupalReliableQueueInterface {
   }
 
   public function releaseItem($item) {
-    return db_update('service_links_analytics')
+    return db_update('bangpoundshare_stats')
       ->fields(array(
         'expire' => 0,
       ))

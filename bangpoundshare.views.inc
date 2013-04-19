@@ -1,8 +1,8 @@
 <?php
 
-function service_links_analytics_views_data() {
+function bangpoundshare_views_data() {
   $data = array(
-    'service_links_analytics' => array(
+    'bangpoundshare_stats' => array(
       'table' => array(
         'group' => 'Service links analytics',
         'base' => array(
@@ -170,7 +170,7 @@ function service_links_analytics_views_data() {
   );
 
   $groups = array();
-  foreach (variable_get('service_links_analytics_entity_types', array('node')) as $type) {
+  foreach (variable_get('bangpoundshare_stats_entity_types', array('node')) as $type) {
     $entity_info = entity_get_info($type);
     $groups[$type] = $entity_info['label'];
 
@@ -179,7 +179,7 @@ function service_links_analytics_views_data() {
       $groups[$type] = t('Content');
     }
 
-    $data['service_links_analytics']['table']['join'][$entity_info['base table']] = array(
+    $data['bangpoundshare_stats']['table']['join'][$entity_info['base table']] = array(
       'left_field' => $entity_info['entity keys']['id'],
       'field' => 'entity_id',
       'extra' => array(
@@ -187,7 +187,7 @@ function service_links_analytics_views_data() {
       ),
     );
 
-    $data['service_links_analytics']['entity_id_'. $entity_info['entity keys']['id']] = array(
+    $data['bangpoundshare_stats']['entity_id_'. $entity_info['entity keys']['id']] = array(
       'title' => $entity_info['label'],
       'help' => 'Help text.',
       'real field' => 'entity_id',
@@ -196,7 +196,7 @@ function service_links_analytics_views_data() {
         'base field' => $entity_info['entity keys']['id'],
         'extra' => array(
           array(
-            'table' => 'service_links_analytics',
+            'table' => 'bangpoundshare_stats',
             'field' => 'entity_type',
             'value' => $type,
           ),
