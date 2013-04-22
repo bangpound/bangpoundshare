@@ -131,7 +131,7 @@ function bangpoundshare_data($entity_type, $entity, $service_id) {
  */
 function bangpoundshare_load($entity_type, $entity_id) {
   $results = db_select('bangpoundshare_stats', 'a')
-    ->fields('a', array('service', 'metric', 'value'))
+    ->fields('a', array('service', 'metric', 'value', 'refresh', 'changed', 'pending'))
     ->condition('entity_type', $entity_type)
     ->condition('entity_id', $entity_id)
     ->execute()
@@ -140,7 +140,11 @@ function bangpoundshare_load($entity_type, $entity_id) {
   $analytics = array();
 
   foreach ($results as $result) {
-    $analytics[$result->service][$result->metric] = $result->value;
+    $analytics[$result->service][$result->metric] = array(
+      'value' => $result->value,
+      'changed' => $result->changed,
+      'pending' => $result->pending,
+    );
   }
 
   return $analytics;
@@ -162,6 +166,8 @@ function bangpoundshare_save($row) {
       ->fields(array(
         'value' => is_array($row->value) ? $row->value[$metric] : $row->value,
         'refresh' => time() + $plugin['max_age'],
+        'changed' => time(),
+        'pending' => 0,
       ))
       ->execute();
   }
@@ -180,19 +186,33 @@ function bangpoundshare_entity_load($entities, $type) {
       $plugins[$plugin] = ctools_get_plugins('bangpoundshare', 'services', $plugin);
     }
 
+    $queue = DrupalQueue::get('bangpoundshare_stats');
+
     foreach ($entities as $entity) {
       list($id) = entity_extract_ids($type, $entity);
-      $result = bangpoundshare_load($type, $id);
-      if (count($result) < count($plugins)) {
-        $queue = DrupalQueue::get('bangpoundshare_stats');
-        foreach (array_keys(array_diff_key($plugins, $result)) as $service) {
-
+      $results = bangpoundshare_load($type, $id);
+      foreach ($plugins as $plugin) {
+        if (isset($results[$plugin['name']])) {
+          $result = current($results[$plugin['name']]);
+          if (($plugin['max_age'] < (time() - $result['changed'])) && empty($result['pending'])) {
+            db_update('bangpoundshare_stats')
+              ->fields(array(
+                'pending' => 1,
+              ))
+              ->condition('entity_type', $type)
+              ->condition('entity_id', $id)
+              ->condition('service', $plugin['name'])
+              ->execute();
+          }
+        }
+        else {
           $data = array(
             'entity_type' => $type,
             'entity_id' => $id,
-            'service' => $plugins[$service]['name'],
-            'metric' => $plugins[$service]['metrics'][0],
             'refresh' => time(),
+            'service' => $plugin['name'],
+            'metric' => $plugin['metrics'][0],
+            'pending' => 1,
           );
           $queue->createItem($data);
         }
@@ -286,11 +306,17 @@ function bangpoundshare_get_handler($plugin) {
   return !empty($cache[$plugin['name']]) ? $cache[$plugin['name']] : FALSE;
 }
 
+/**
+ * Implements hook_entity_delete().
+ */
 function bangpoundshare_entity_delete($entity, $type) {
   list($id) = entity_extract_ids($type, $entity);
   db_delete('bangpoundshare_stats')->condition('entity_type', $type)->condition('entity_id', $id)->execute();
 }
 
+/**
+ * Implements hook_library().
+ */
 function bangpoundshare_library() {
   $libraries['links'] = array(
     'title' => '!&# Share links',

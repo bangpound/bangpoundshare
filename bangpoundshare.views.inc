@@ -122,9 +122,9 @@ function bangpoundshare_views_data() {
           'help' => 'Sort by <em class="placeholder">Value</em>',
         ),
       ),
-      'refresh' => array(
-        'title' => 'Refresh',
-        'help' => 'Refresh',
+      'changed' => array(
+        'title' => 'Changed',
+        'help' => 'Changed',
         'field' => array(
           'handler' => 'views_handler_field_date',
           'help' => 'Refresh',
@@ -133,7 +133,7 @@ function bangpoundshare_views_data() {
         'filter' => array(
           'handler' => 'views_handler_filter_date',
           'allow empty' => TRUE,
-          'help' => 'Filter on <em class="placeholder">Refresh</em>',
+          'help' => 'Filter on <em class="placeholder">Changed</em>',
         ),
         'argument' => array(
           'handler' => 'views_handler_argument_date',
@@ -141,29 +141,7 @@ function bangpoundshare_views_data() {
         ),
         'sort' => array(
           'handler' => 'views_handler_sort_date',
-          'help' => 'Sort by <em class="placeholder">Refresh</em>',
-        ),
-      ),
-      'expire' => array(
-        'title' => 'Expire',
-        'help' => 'Expire',
-        'field' => array(
-          'handler' => 'views_handler_field_date',
-          'help' => 'Expire',
-          'click sortable' => TRUE,
-        ),
-        'filter' => array(
-          'handler' => 'views_handler_filter_date',
-          'allow empty' => TRUE,
-          'help' => 'Filter on <em class="placeholder">Expire</em>',
-        ),
-        'argument' => array(
-          'handler' => 'views_handler_argument_date',
-          'help' => 'Expire',
-        ),
-        'sort' => array(
-          'handler' => 'views_handler_sort_date',
-          'help' => 'Sort by <em class="placeholder">Expire</em>',
+          'help' => 'Sort by <em class="placeholder">Changed</em>',
         ),
       ),
     ),

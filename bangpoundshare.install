@@ -42,6 +42,13 @@ function bangpoundshare_schema() {
         'unsigned' => TRUE,
         'not null' => FALSE,
       ),
+      'changed' => array(
+        'description' => 'Timestamp when the item was last updated.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => 0,
+      ),
       'refresh' => array(
         'description' => 'Timestamp when the item should be refreshed (max age).',
         'type' => 'int',
@@ -52,8 +59,16 @@ function bangpoundshare_schema() {
       'expire' => array(
         'description' => 'Timestamp when the claim lease expires on the item.',
         'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => 0,
+      ),
+      'pending' => array(
+        'description' => 'Flag indicates if item should be updated',
+        'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
+        'size' => 'tiny',
       ),
     ),
     'primary key' => array('entity_type', 'entity_id', 'service', 'metric'),
@@ -171,6 +186,9 @@ function bangpoundshare_schema_1() {
   return $schema;
 }
 
+/**
+ * Implements hook_enable().
+ */
 function bangpoundshare_enable() {
   variable_set('queue_class_bangpoundshare_stats', 'ServiceLinksAnalyticsQueue');
 }

@@ -25,6 +25,7 @@ class ServiceLinksAnalyticsQueue implements DrupalReliableQueueInterface {
 
   public function numberOfItems() {
     $query = db_select('bangpoundshare_stats')
+      ->condition('pending', 1)
       ->condition('refresh', time(), '<');
 
     $query->addExpression('COUNT(*)');
@@ -34,9 +35,10 @@ class ServiceLinksAnalyticsQueue implements DrupalReliableQueueInterface {
   public function claimItem($lease_time = 30) {
     // Claim an item by updating its expire fields.
     while (TRUE) {
-      $query = db_select('bangpoundshare_stats', 'a')
-        ->fields('a', array('entity_type', 'entity_id', 'service'))
+      $query = db_select('bangpoundshare_stats')
+        ->fields('bangpoundshare_stats', array('entity_type', 'entity_id', 'service'))
         ->condition('expire', 0)
+        ->condition('pending', 1)
         ->condition('refresh', time(), '<')
         ->orderBy('refresh', 'ASC')
         ->range(0, 1);
@@ -71,6 +73,7 @@ class ServiceLinksAnalyticsQueue implements DrupalReliableQueueInterface {
     return db_update('bangpoundshare_stats')
       ->fields(array(
         'expire' => 0,
+        'pending' => 0,
       ))
       ->condition('entity_type', $item->data->entity_type)
       ->condition('entity_id', $item->data->entity_id)
