@@ -157,6 +157,7 @@ function bangpoundshare_entity_view($entity, $type, $view_mode, $langcode) {
  * Returns analytics for a URL.
  */
 function bangpoundshare_data($entity_type, $entity, $service_id) {
+  ctools_include('plugins');
 
   $uri = entity_uri($entity_type, $entity);
   $uri['options']['absolute'] = TRUE;
