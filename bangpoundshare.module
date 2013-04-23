@@ -118,6 +118,7 @@ function bangpoundshare_data($entity_type, $entity, $service_id) {
 
   $uri = entity_uri($entity_type, $entity);
   $uri['options']['absolute'] = TRUE;
+  $url = url($uri['path'], $uri['options']);
   $plugin = ctools_get_plugins('bangpoundshare', 'services', $service_id);
   $handler = bangpoundshare_get_handler($plugin);
   $handler->request($url);
