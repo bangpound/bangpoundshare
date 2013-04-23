@@ -246,6 +246,7 @@ function bangpoundshare_cron() {
 function bangpoundshare_cron_queue_info() {
   $queues['bangpoundshare_stats'] = array(
     'worker callback' => 'bangpoundshare_refresh',
+    'time' => 60,
   );
   return $queues;
 }
