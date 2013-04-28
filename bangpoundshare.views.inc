@@ -4,10 +4,10 @@ function bangpoundshare_views_data() {
   $data = array(
     'bangpoundshare_stats' => array(
       'table' => array(
-        'group' => 'Service links analytics',
+        'group' => 'Share link stats',
         'base' => array(
           'field' => 'entity_type',
-          'title' => 'Service links analytics',
+          'title' => 'Share link stats',
           'help' => 'Data table',
           'weight' => 10,
         ),

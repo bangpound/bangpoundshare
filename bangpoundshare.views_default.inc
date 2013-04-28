@@ -12,18 +12,18 @@ function bangpoundshare_views_default_views() {
   $views = array();
 
   $view = new view();
-  $view->name = 'metrics';
+  $view->name = 'share_stats';
   $view->description = '';
   $view->tag = 'default';
   $view->base_table = 'bangpoundshare_stats';
-  $view->human_name = 'Metrics';
+  $view->human_name = 'Share stats';
   $view->core = 7;
   $view->api_version = '3.0';
   $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'Metrics';
+  $handler->display->display_options['title'] = 'Share stats';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['access']['type'] = 'none';
   $handler->display->display_options['cache']['type'] = 'none';
@@ -88,15 +88,9 @@ function bangpoundshare_views_default_views() {
   $handler->display->display_options['filters']['entity_type']['field'] = 'entity_type';
   $handler->display->display_options['filters']['entity_type']['value'] = 'node';
 
-  /* Display: Page */
-  $handler = $view->new_display('page', 'Page', 'page');
-  $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
-  $handler->display->display_options['path'] = 'node/%/metrics';
-  $handler->display->display_options['menu']['type'] = 'tab';
-  $handler->display->display_options['menu']['title'] = 'Metrics';
-  $handler->display->display_options['menu']['weight'] = '0';
-  $handler->display->display_options['menu']['context'] = 0;
-  $translatables['metrics'] = array(
+  /* Display: Content pane */
+  $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
+  $translatables['share_stats'] = array(
     t('Master'),
     t('Metrics'),
     t('more'),
@@ -111,9 +105,10 @@ function bangpoundshare_views_default_views() {
     t('.'),
     t(','),
     t('All'),
-    t('Page'),
+    t('Content pane'),
+    t('View panes'),
   );
-  $views['metrics'] = $view;
+  $views['share_stats'] = $view;
 
   return $views;
 }
