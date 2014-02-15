@@ -84,7 +84,7 @@ function bangpoundshare_entity_view($entity, $type, $view_mode, $langcode) {
 
     $link = array();
 
-    $link['path'] = ctools_context_keyword_substitute($item->path, array(), $item->context);
+    $link['path'] = ctools_context_keyword_substitute($item->path, array(), $item->context, array('sanitize' => FALSE));
     $url = parse_url($link['path']);
     if (isset($url['query'])) {
       $link['path'] = strtr($link['path'], array('?' . $url['query'] => ''));
