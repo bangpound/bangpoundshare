@@ -229,6 +229,12 @@ class bangpoundshare_links extends ctools_export_ui {
   }
 
   function edit_form_content_validate(&$form, &$form_state) {
-    form_set_value($form['options']['attributes']['class'], explode(' ', $form_state['values']['options']['attributes']['class']), $form_state);
+    if (!empty($form_state['values']['options']['attributes']['class'])) {
+      $value = explode(' ', $form_state['values']['options']['attributes']['class']);
+    }
+    else {
+      $value = array();
+    }
+    form_set_value($form['options']['attributes']['class'], $value, $form_state);
   }
 }
