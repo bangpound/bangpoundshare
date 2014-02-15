@@ -69,7 +69,14 @@ function bangpoundshare_default_bangpoundshare_links() {
     'logic' => 'and',
   );
   $link->text = 'Facebook';
-  $link->path = 'http://www.facebook.com/sharer.php?u=%node:url&t=%node:title';
+  $link->path = 'https://www.facebook.com/sharer.php?u=%node:url';
+  $link->options = array(
+    'attributes' => array(
+      'class' => array(
+        0 => 'popup',
+      ),
+    ),
+  );
   $links['facebook'] = $link;
 
   $link = new bangpoundShareLink();
@@ -131,6 +138,13 @@ function bangpoundshare_default_bangpoundshare_links() {
   );
   $link->text = 'Google+';
   $link->path = 'https://plus.google.com/share?url=%node:url';
+  $link->options = array(
+    'attributes' => array(
+      'class' => array(
+        0 => 'popup',
+      ),
+    ),
+  );
   $links['google_plus'] = $link;
 
   $link = new bangpoundShareLink();
@@ -191,7 +205,14 @@ function bangpoundshare_default_bangpoundshare_links() {
     'logic' => 'and',
   );
   $link->text = 'Twitter';
-  $link->path = 'http://twitter.com/share?url=%node:url&text=%node:title';
+  $link->path = 'http://twitter.com/intent/tweet?text=%node:title&url=%node:url';
+  $link->options = array(
+    'attributes' => array(
+      'class' => array(
+        0 => 'popup',
+      ),
+    ),
+  );
   $links['twitter'] = $link;
 
   return $links;
