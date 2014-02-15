@@ -1,16 +1,13 @@
 <?php
 
 function bangpoundshare_menu() {
-  $items['admin/config/services/share'] = array(
-    'title' => '!&# Share',
+  $items['admin/config/services/share/stats'] = array(
+    'title' => 'Statistics',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('bangpoundshare_admin'),
     'file' => 'bangpoundshare.admin.inc',
     'access arguments' => array('administer site configuration'),
-  );
-  $items['admin/config/services/share/stats'] = array(
-    'title' => 'Statistics',
-    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'type' => MENU_LOCAL_TASK,
   );
   return $items;
 }
@@ -22,7 +19,9 @@ function bangpoundshare_menu() {
  * the callback items to have a common menu item.
  */
 function bangpoundshare_menu_alter(&$items) {
-  $items['admin/config/services/share/links']['type'] = MENU_LOCAL_TASK;
+  $items['admin/config/services/share'] = $items['admin/config/services/share/links'];
+  $items['admin/config/services/share']['title'] = '!&# Share';
+  $items['admin/config/services/share/links']['type'] = MENU_DEFAULT_LOCAL_TASK;
 }
 
 /**
