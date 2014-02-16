@@ -168,6 +168,13 @@ function bangpoundshare_schema_1() {
         'length' => '255',
         'not null' => FALSE,
       ),
+      'html' => array(
+        'type' => 'int',
+        'size' => 'tiny',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
       'options' => array(
         'description' => 'TODO: please describe this field!',
         'type' => 'text',

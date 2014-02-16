@@ -178,6 +178,15 @@ class bangpoundshare_links extends ctools_export_ui {
       '#size' => 255,
     );
 
+
+    $form['html'] = array(
+      '#type' => 'checkbox',
+      '#title' => 'HTML?',
+      '#description' => t('Link text is HTML'),
+      '#return_value' => 1,
+      '#default_value' => $form_state['item']->html,
+    );
+
     $form['options'] = array(
       '#type' => 'fieldset',
       '#tree' => TRUE,
