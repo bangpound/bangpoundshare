@@ -175,15 +175,13 @@ function bangpoundshare_schema_1() {
         'not null' => TRUE,
         'default' => 0,
       ),
-      'options' => array(
+      'attributes' => array(
         'description' => 'TODO: please describe this field!',
         'type' => 'text',
         'size' => 'big',
         'serialize' => TRUE,
         'object default' => array(
-          'attributes' => array(
-            'class' => array(),
-          ),
+          'class' => array(),
         ),
       ),
     ),

@@ -96,7 +96,7 @@ function bangpoundshare_entity_view($entity, $type, $view_mode, $langcode) {
     $link['href'] = rtrim($link['path'], '?');
     $link['title'] = $item->text;
     $link['html'] = !empty($item->html) ? TRUE : FALSE;
-    $link['attributes'] = $item->options['attributes'];
+    $link['attributes'] = $item->attributes;
 
     $links[$item->name] = $link;
   }

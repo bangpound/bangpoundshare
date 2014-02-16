@@ -187,20 +187,16 @@ class bangpoundshare_links extends ctools_export_ui {
       '#default_value' => $form_state['item']->html,
     );
 
-    $form['options'] = array(
+    $form['attributes'] = array(
       '#type' => 'fieldset',
       '#tree' => TRUE,
-      '#title' => 'Options',
+      '#title' => 'Attributes',
     );
 
-    $form['options']['attributes'] = array(
-      '#tree' => TRUE,
-    );
-
-    $form['options']['attributes']['class'] = array(
+    $form['attributes']['class'] = array(
       '#type' => 'textfield',
       '#title' => t('Class'),
-      '#default_value' => implode(' ', $form_state['item']->options['attributes']['class']),
+      '#default_value' => implode(' ', $form_state['item']->attributes['class']),
       '#size' => 255,
     );
 
@@ -238,12 +234,12 @@ class bangpoundshare_links extends ctools_export_ui {
   }
 
   function edit_form_content_validate(&$form, &$form_state) {
-    if (!empty($form_state['values']['options']['attributes']['class'])) {
-      $value = explode(' ', $form_state['values']['options']['attributes']['class']);
+    if (!empty($form_state['values']['attributes']['class'])) {
+      $value = explode(' ', $form_state['values']['attributes']['class']);
     }
     else {
       $value = array();
     }
-    form_set_value($form['options']['attributes']['class'], $value, $form_state);
+    form_set_value($form['attributes']['class'], $value, $form_state);
   }
 }
