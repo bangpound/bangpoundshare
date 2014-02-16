@@ -178,6 +178,19 @@ class bangpoundshare_links extends ctools_export_ui {
       '#size' => 255,
     );
 
+    if (!empty($form_state['contexts'])) {
+      // Set extended description if both CCK and Token modules are enabled, notifying of unlisted keywords
+      if (module_exists('content') && module_exists('token')) {
+        $description = t('Context keywords will be substituted in this content. Note that CCK fields may be used as keywords using patterns like <em>%node:field_name-formatted</em>.');
+      }
+      elseif (!module_exists('token')) {
+        $description = t('Context keywords will be substituted in this content. More keywords will be available if you install the Token module, see http://drupal.org/project/token.');
+      }
+      else {
+        $description = t('Context keywords will be substituted in this content.');
+      }
+    }
+    $form['path']['#description'] = $description;
 
     $form['html'] = array(
       '#type' => 'checkbox',
@@ -201,16 +214,6 @@ class bangpoundshare_links extends ctools_export_ui {
     );
 
     if (!empty($form_state['contexts'])) {
-      // Set extended description if both CCK and Token modules are enabled, notifying of unlisted keywords
-      if (module_exists('content') && module_exists('token')) {
-        $description = t('If checked, context keywords will be substituted in this content. Note that CCK fields may be used as keywords using patterns like <em>%node:field_name-formatted</em>.');
-      }
-      elseif (!module_exists('token')) {
-        $description = t('If checked, context keywords will be substituted in this content. More keywords will be available if you install the Token module, see http://drupal.org/project/token.');
-      }
-      else {
-        $description = t('If checked, context keywords will be substituted in this content.');
-      }
 
       $form['contexts'] = array(
         '#title' => t('Substitutions'),
