@@ -46,7 +46,7 @@ function bangpoundshare_ctools_plugin_api($module, $api) {
 }
 
 /**
- * Implement hook_node_view().
+ * Implement hook_entity_view().
  */
 function bangpoundshare_entity_view($entity, $type, $view_mode, $langcode) {
 
