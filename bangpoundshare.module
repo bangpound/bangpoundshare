@@ -58,9 +58,6 @@ function bangpoundshare_entity_view($entity, $type, $view_mode, $langcode) {
   $context[] = ctools_context_create('entity:'. $type, $entity);
   $context[] = ctools_context_create('string', $view_mode);
 
-  // Add social media sharing links to node.
-  $uri = entity_uri($type, $entity);
-
   $links = array();
   $args = array('entity_type' => $type);
   $items = ctools_export_load_object('bangpoundshare_links', 'conditions', $args);
