@@ -124,6 +124,7 @@ function bangpoundshare_entity_view($entity, $type, $view_mode, $langcode) {
       $plugins[$plugin] = ctools_get_plugins('bangpoundshare', 'services', $plugin);
     }
 
+    /** @var DrupalQueueInterface $queue */
     $queue = DrupalQueue::get('bangpoundshare_stats');
 
     list($id) = entity_extract_ids($type, $entity);
