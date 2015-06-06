@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Implements hook_menu().
+ */
 function bangpoundshare_menu() {
   $items['admin/config/services/share/stats'] = array(
     'title' => 'Statistics',
@@ -253,6 +256,11 @@ function bangpoundshare_cron_queue_info() {
   return $queues;
 }
 
+/**
+ * Cron worker to update social media stats.
+ *
+ * @param $data
+ */
 function bangpoundshare_refresh($data) {
   $entities = entity_load($data->entity_type, array($data->entity_id), array(), FALSE);
   $entity = reset($entities);
@@ -290,6 +298,12 @@ function bangpoundshare_ctools_plugin_type() {
   return $plugins;
 }
 
+/**
+ * Get handler object.
+ *
+ * @param $plugin
+ * @return bool
+ */
 function bangpoundshare_get_handler($plugin) {
   $cache = &drupal_static(__FUNCTION__, array());
   if (empty($cache[$plugin['name']])) {
