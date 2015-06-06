@@ -263,7 +263,7 @@ function bangpoundshare_cron_queue_info() {
  * @param $data
  */
 function bangpoundshare_refresh($data) {
-  $entities = entity_load($data->entity_type, array($data->entity_id), array(), FALSE);
+  $entities = entity_load($data->entity_type, array($data->entity_id));
   $entity = reset($entities);
 
   $result = new stdClass;
