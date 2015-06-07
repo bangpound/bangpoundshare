@@ -247,12 +247,12 @@ class bangpoundshare_links extends ctools_export_ui {
   }
 
   function edit_save_form($form_state) {
-    cache_clear_all('bangpoundshare_fast_access');
+    cache_clear_all('bangpoundshare_fast_access', 'cache');
     parent::edit_save_form($form_state);
   }
 
   function set_item_state($state, $js, $input, $item) {
-    cache_clear_all('bangpoundshare_fast_access');
+    cache_clear_all('bangpoundshare_fast_access', 'cache');
     return parent::set_item_state($state, $js, $input, $item);
   }
 }
