@@ -189,8 +189,8 @@ class bangpoundshare_links extends ctools_export_ui {
       else {
         $description = t('Context keywords will be substituted in this content.');
       }
+      $form['path']['#description'] = $description;
     }
-    $form['path']['#description'] = $description;
 
     $form['html'] = array(
       '#type' => 'checkbox',
