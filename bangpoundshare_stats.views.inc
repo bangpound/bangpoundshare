@@ -1,6 +1,6 @@
 <?php
 
-function bangpoundshare_views_data() {
+function bangpoundshare_stats_views_data() {
   $data = array(
     'bangpoundshare_stats' => array(
       'table' => array(

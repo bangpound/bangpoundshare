@@ -1,6 +1,6 @@
 <?php
 
-function bangpoundshare_admin() {
+function bangpoundshare_stats_admin() {
   ctools_include('plugins');
 
   $options = array();
@@ -15,7 +15,7 @@ function bangpoundshare_admin() {
   );
 
   $options = array();
-  foreach (ctools_get_plugins('bangpoundshare', 'services') as $plugin) {
+  foreach (ctools_get_plugins('bangpoundshare_stats', 'services') as $plugin) {
     $options[$plugin['name']] = $plugin['label'];
   }
   $form['bangpoundshare_stats_plugins'] = array(

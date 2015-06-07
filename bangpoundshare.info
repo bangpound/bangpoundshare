@@ -4,5 +4,3 @@ core = 7.x
 dependencies[] = ctools
 package = !&#
 files[] = bangpoundsharelink.class.php
-files[] = ServiceLinksAnalyticsService.inc
-files[] = bangpoundshare_stats.queue.inc

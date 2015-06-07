@@ -1,0 +1,7 @@
+name = !&# Share Stats
+description = Social sharing statistics
+core = 7.x
+dependencies[] = bangpoundshare
+package = !&#
+files[] = ServiceLinksAnalyticsService.inc
+files[] = bangpoundshare_stats.queue.inc

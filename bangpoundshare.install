@@ -6,79 +6,6 @@
 function bangpoundshare_schema() {
   $schema = bangpoundshare_schema_1();
 
-  $schema['bangpoundshare_stats'] = array(
-    'description' => 'TODO: please describe this table!',
-    'fields' => array(
-      'entity_type' => array(
-        'description' => 'The entity type this data is attached to',
-        'type' => 'varchar',
-        'length' => '128',
-        'not null' => TRUE,
-        'default' => '',
-      ),
-      'entity_id' => array(
-        'description' => 'The entity id this data is attached to',
-        'type' => 'int',
-        'unsigned' => TRUE,
-        'not null' => TRUE,
-      ),
-      'service' => array(
-        'description' => 'Name of service',
-        'type' => 'varchar',
-        'length' => '255',
-        'not null' => TRUE,
-        'default' => '',
-      ),
-      'metric' => array(
-        'description' => 'Service metric',
-        'type' => 'varchar',
-        'length' => '255',
-        'not null' => TRUE,
-        'default' => 'count',
-      ),
-      'value' => array(
-        'description' => 'Actual stats',
-        'type' => 'int',
-        'unsigned' => TRUE,
-        'not null' => FALSE,
-      ),
-      'changed' => array(
-        'description' => 'Timestamp when the item was last updated.',
-        'type' => 'int',
-        'unsigned' => TRUE,
-        'not null' => FALSE,
-        'default' => 0,
-      ),
-      'refresh' => array(
-        'description' => 'Timestamp when the item should be refreshed (max age).',
-        'type' => 'int',
-        'unsigned' => TRUE,
-        'not null' => FALSE,
-        'default' => 0,
-      ),
-      'expire' => array(
-        'description' => 'Timestamp when the claim lease expires on the item.',
-        'type' => 'int',
-        'unsigned' => TRUE,
-        'not null' => FALSE,
-        'default' => 0,
-      ),
-      'pending' => array(
-        'description' => 'Flag indicates if item should be updated',
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 0,
-        'size' => 'tiny',
-      ),
-    ),
-    'primary key' => array('entity_type', 'entity_id', 'service', 'metric'),
-    'indexes' => array(
-      'expire' => array('expire'),
-      'refresh' => array('refresh'),
-      'value' => array('value'),
-    ),
-  );
-
   return $schema;
 }
 
@@ -189,11 +116,4 @@ function bangpoundshare_schema_1() {
   );
 
   return $schema;
-}
-
-/**
- * Implements hook_enable().
- */
-function bangpoundshare_enable() {
-  variable_set('queue_class_bangpoundshare_stats', 'ServiceLinksAnalyticsQueue');
 }
