@@ -9,7 +9,7 @@ $plugin = array(
   'menu' => array(
     'menu item' => 'links',
     'menu prefix' => 'admin/config/services/share',
-    'menu title' => 'Links',
+    'menu title' => '!&# Share',
     'menu description' => 'Configure social sharing links.',
   ),
   'title singular' => t('link'),

@@ -24,6 +24,7 @@ function bangpoundshare_stats_menu() {
 function bangpoundshare_stats_menu_alter(&$items) {
   $items['admin/config/services/share'] = $items['admin/config/services/share/links'];
   $items['admin/config/services/share']['title'] = '!&# Share';
+  $items['admin/config/services/share/links']['title'] = 'Links';
   $items['admin/config/services/share/links']['type'] = MENU_DEFAULT_LOCAL_TASK;
 }
 
