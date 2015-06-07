@@ -52,7 +52,7 @@ function bangpoundshare_ctools_plugin_api($module, $api) {
  * Implement hook_entity_view().
  */
 function bangpoundshare_entity_view($entity, $type, $view_mode, $langcode) {
-  $fast_access = variable_get('bangpoundshare_fast_access', array());
+  $fast_access = bangpoundshare_fast_access_cache();
   if (!isset($fast_access[$type]) || (!in_array($view_mode, $fast_access[$type]))) {
     return;
   }
@@ -339,4 +339,47 @@ function bangpoundshare_library() {
     ),
   );
   return $libraries;
+}
+
+function bangpoundshare_fast_access_cache() {
+  $fast_access = &drupal_static(__FUNCTION__);
+
+  // Grab from cache or build the array.
+  if (!isset($fast_access)) {
+    if ($cache = cache_get('bangpoundshare_fast_access')) {
+      $fast_access = $cache->data;
+    }
+    else {
+      $fast_access = array();
+
+      // Identify entity types and view modes so hook_entity_view can run
+      // only for those combinations where links are configured to display.
+      $items = ctools_export_load_object('bangpoundshare_links');
+      $fast_access = array();
+      foreach ($items as $item) {
+        if (empty($item) || !empty($item->disabled)) {
+          continue;
+        }
+
+        $entity_type = $item->entity_type;
+
+        foreach ($item->access['plugins'] as $plugin) {
+          if (strpos($plugin['name'], 'entity_view_mode') === 0) {
+
+            // Merge submitted values into existing fast access settings.
+            if (!isset($fast_access[$entity_type])) {
+              $fast_access[$entity_type] = array();
+            }
+
+            $fast_access[$entity_type] = array_unique(array_merge($fast_access[$entity_type],
+              array_values($plugin['settings']['view_mode'])));
+          }
+        }
+      }
+
+      cache_set('bangpoundshare_fast_access', $fast_access);
+    }
+  }
+
+  return $fast_access;
 }
