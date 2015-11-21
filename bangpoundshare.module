@@ -112,6 +112,7 @@ function bangpoundshare_fast_access_cache() {
 
       // Identify entity types and view modes so hook_entity_view can run
       // only for those combinations where links are configured to display.
+      ctools_include('export');
       $items = ctools_export_load_object('bangpoundshare_links');
       $fast_access = array();
       foreach ($items as $item) {
