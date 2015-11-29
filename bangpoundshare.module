@@ -94,6 +94,15 @@ function bangpoundshare_library() {
     'version' => '1.0-dev',
     'js' => array(
       drupal_get_path('module', 'bangpoundshare') . '/bangpoundshare.links.js' => array(),
+      array(
+        'data' => array(
+          'bangpoundShareLinks' => array(
+            'popupWidth' => 550,
+            'popupHeight' => 450,
+          )
+        ),
+        'type' => 'setting',
+      ),
     ),
   );
   return $libraries;
